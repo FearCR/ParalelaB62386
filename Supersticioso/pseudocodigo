@@ -1,0 +1,60 @@
+Casos a considerar:
+-NO pueden haber 13 hilos procesando.
+
+-Si hay menos de 12 hilos, pueden entrar hasta llegar a 12.
+-Si hay 12 hilos, tienen que entrar 2 a la vez.
+
+-Si hay mas de 14 hilos, pueden entrar y salir hasta llegar a 14.
+-Si hay 14 hilos solo pueden salir 2 a la vez.
+
+mutex;
+semT;
+
+int adentro=0;
+int esperandoFuera=0;
+int esperandoDentro=0;
+
+T(){
+  mutex.lock();
+  //entrar y procesar
+  if(adentro<12){
+    adentro++;
+    mutex.unlock();
+    procesar();
+  }else if(adentro>14){
+    adentro++;
+    mutex.unlock();
+    procesar();
+  }else if(adentro==12){
+    if(esperandoFuera>1){
+      esperandoFuera--;
+      adentro+=2;
+      mutex.unlock();
+      semT.signal();
+      procesar();
+    }else{
+      esperandoFuera++;
+      mutex.unlock();
+      semT.wait();
+      procesar();
+    }
+  }
+
+  //salir
+  if(adentro<=12||adentro>14){
+    adentro--;
+    mutex.unlock();
+  }else if(adentro==14){
+    if(esperandoDentro>1){
+      adentro--;
+      mutex.unlock();
+      semT.signal();
+    }else{
+      esperandoDentro++;
+      mutex.unlock();
+      semT.wait();
+      adentro--;
+    }
+
+  }
+}
