@@ -6,7 +6,9 @@ NO pueden haber 13 hilos procesando.
 
 3-Si hay mas de 14 hilos, pueden entrar y salir hasta llegar a 14.
 4-Si hay 14 hilos solo pueden salir 2 a la vez.
-
+5-si hay 12 o 14 pueden entrar y salir al mismo tiempo, en caso de que
+   a)alguien quiera salir y hay uno esperando fuera para entrar
+   b)alguien quiera entrar y hay uno esperando dentro para salir
 
 
 
