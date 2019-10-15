@@ -1,11 +1,15 @@
 Casos a considerar:
--NO pueden haber 13 hilos procesando.
+NO pueden haber 13 hilos procesando.
 
--Si hay menos de 12 hilos, pueden entrar hasta llegar a 12.
--Si hay 12 hilos, tienen que entrar 2 a la vez.
+1-Si hay menos de 12 hilos, pueden entrar y salir hasta llegar a 12.
+2-Si hay 12 hilos, tienen que entrar 2 a la vez.
 
--Si hay mas de 14 hilos, pueden entrar y salir hasta llegar a 14.
--Si hay 14 hilos solo pueden salir 2 a la vez.
+3-Si hay mas de 14 hilos, pueden entrar y salir hasta llegar a 14.
+4-Si hay 14 hilos solo pueden salir 2 a la vez.
+
+
+
+
 
 mutex;
 semT;
@@ -14,25 +18,34 @@ int adentro=0;
 int esperandoFuera=0;
 int esperandoDentro=0;
 
+int main(){
+  //codigo
+  return 0;
+}
+
+void procesar(){
+  sleep_for(seconds(rand() % 10));
+}
+
 T(){
   mutex.lock();
   //entrar y procesar
-  if(adentro<12){
+  if(adentro<12){   //caso 1
     adentro++;
     mutex.unlock();
     procesar();
-  }else if(adentro>14){
+  }else if(adentro>14){   //caso 3
     adentro++;
     mutex.unlock();
     procesar();
-  }else if(adentro==12){
-    if(esperandoFuera>1){
+  }else if(adentro==12){   //caso 2
+    if(esperandoFuera>1){  //si hay alguno esperando afuera entran 2 a la vez
       esperandoFuera--;
       adentro+=2;
       mutex.unlock();
       semT.signal();
       procesar();
-    }else{
+    }else{   //si no hay nadie esperando, espera
       esperandoFuera++;
       mutex.unlock();
       semT.wait();
@@ -41,19 +54,18 @@ T(){
   }
 
   //salir
-  if(adentro<=12||adentro>14){
+  if(adentro<=12||adentro>14){   //casos 1 y 3
     adentro--;
     mutex.unlock();
-  }else if(adentro==14){
-    if(esperandoDentro>1){
-      adentro--;
+  }else if(adentro==14){   //caso 4
+    if(esperandoDentro>1){   //si hay alguno esperando dentro, salen 2 a la vez
+      adentro-=2;
       mutex.unlock();
       semT.signal();
-    }else{
+    }else{   //si no hay nadie esperando dentro, espera.
       esperandoDentro++;
       mutex.unlock();
       semT.wait();
-      adentro--;
     }
 
   }
