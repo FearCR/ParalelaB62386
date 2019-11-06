@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#define NUMTHRDS 6
+#define NUMTHRDS 100
 #define PISOS 16
 
 
@@ -20,9 +20,10 @@ using namespace std;
 
 int status;
 int n = 256;
+bool moving=true;
 pthread_t thds[NUMTHRDS];
-int subidas[PISOS];
-int bajadas[PISOS];
+int subidas[PISOS+1];
+int bajadas[PISOS+1];
 int pisoMaximo=0;
 int pisoMinimo=0;
 int pisoActual=0;
@@ -78,29 +79,27 @@ void *ascensor ( void *arg ) {
 
   while(true){
 
-    if(bajadas[pisoActual]>1){//bajan del ascensor
+    if(bajadas[pisoActual]>0){//bajan del ascensor
       for (int j = 0; j < bajadas[pisoActual]; j) {
         if(cPersonaDentro>0){
+          sem_post(&sPersona);
           pthread_mutex_lock ( &mutex );
           cPersonaDentro--;
-          cout<<"Bajo uno en el piso "<<pisoActual<<" adentro del ascensor hay "<<cPersonaDentro<<endl;
           bajadas[pisoActual]--;
+          cout<<"Bajo uno en el piso "<<pisoActual<<" adentro del ascensor hay "<<cPersonaDentro<<endl;
           pthread_mutex_unlock ( &mutex );
-          if(subidas[pisoActual]>1){
-            sem_post(&sPersona);
-          }
-
         }else{
           break; //si se vacía el ascensor
         }
       }
     }
-    if(subidas[pisoActual]>1){//suben al ascensor
+    if(subidas[pisoActual]>0){//suben al ascensor
       for (int j = 0; j < subidas[pisoActual]; j) {
         if(cPersonaDentro<=8){//solo suben si hay espacio
           sem_post( &sPersona );
           pthread_mutex_lock ( &mutex );
           cPersonaDentro++;
+          cPersonaFuera--;
           cout<<"subio uno en el piso "<<pisoActual<<" adentro del ascensor hay "<<cPersonaDentro<<endl;
           subidas[pisoActual]--;
           pthread_mutex_unlock ( &mutex );
@@ -115,44 +114,52 @@ void *ascensor ( void *arg ) {
       pthread_mutex_lock ( &mutex );
       cout<<"Nadie necesita subir o bajar del ascensor, entonces espero. "<<endl;
       pthread_mutex_unlock ( &mutex );
+      moving=false;
       sem_wait( &sAscensor );
+      moving=true;
       pthread_mutex_lock ( &mutex );
       cout<<"señal recibida, alguien necesita subir al ascensor"<<endl;
       pthread_mutex_unlock ( &mutex );
 
     }
-    for (int j = 0; j < PISOS; j++) {//se fija cual es el piso maximo y minimo al que tiene que ir siempre
-      if(subidas[j]>1&&j>pisoMaximo){
+    pisoMaximo=0;
+    pisoMinimo=0;
+    for (int j = 0; j <= PISOS; j++) {//se fija cual es el piso maximo y minimo al que tiene que ir siempre
+      if(subidas[j]>0&&j>pisoMaximo){
         pisoMaximo=j;
       }
-      if(bajadas[j]>1&&j>pisoMaximo){
+      if(bajadas[j]>0&&j>pisoMaximo){
         pisoMaximo=j;
       }
-      if(subidas[j]>1&&j<pisoMinimo){
+      if(subidas[j]>0&&j<pisoMinimo){
         pisoMinimo=j;
       }
-      if(bajadas[j]>1&&j>pisoMinimo){
+      if(bajadas[j]>0&&j<pisoMinimo){
         pisoMinimo=j;
       }
     }
-
 
     if(subiendo){
-      if(pisoActual<pisoMaximo){
+      if(pisoActual<pisoMaximo||pisoActual<pisoMinimo){
         subiendo=true;
         pisoActual++;
+        //sem_post( &sPersona );
+        cout<<pisoActual<<endl;
       }else{
         subiendo=false;
       }
-    }else{
-      if(pisoActual>pisoMinimo){
+    }
+    if(!subiendo){
+      if(pisoActual>pisoMinimo||pisoActual>pisoMaximo){
         subiendo=false;
         pisoActual--;
+        //sem_post( &sPersona );
+        cout<<pisoActual<<endl;
       }else{
         subiendo=true;
       }
     }
-
+    //cout<<cPersonaDentro;
   }
   pthread_exit ( ( void * ) 0 );
 }
@@ -167,20 +174,14 @@ void *persona ( void *arg ) {
   cPersonaFuera++;
   subidas[meSuboEn]++;
   pthread_mutex_unlock ( &mutex );
-  sem_post(&sAscensor);
-  if(cPersonaDentro>=8){
-    pthread_mutex_lock ( &mutex );
-    cout<<"El ascensor esta lleno, entonces espero "<<endl;
-    pthread_mutex_unlock ( &mutex );
-    sem_wait( &sPersona );
+  if(moving==false){
+      sem_post(&sAscensor);
   }
-  if(pisoActual!=meSuboEn){
-    sem_wait( &sPersona );
-  }
+
+  sem_wait(&sPersona);
   pthread_mutex_lock ( &mutex );
-  cout<<"Entré y presioné el boton para bajar en el piso "<<meBajoEn<<endl;
   bajadas[meBajoEn]++;
   pthread_mutex_unlock ( &mutex );
-  sem_wait( &sPersona );
+
   pthread_exit ( ( void * ) 0 );	// Finish this thread
 }
