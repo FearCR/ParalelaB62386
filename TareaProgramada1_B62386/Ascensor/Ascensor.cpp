@@ -7,10 +7,10 @@
 #include <iostream>
 #include <pthread.h>
 #include <semaphore.h>
-
+#include <unistd.h>
 using namespace std;
 
-#define NUMTHRDS 10000
+#define NUMTHRDS 100
 #define PISOS 16
 
 
@@ -71,6 +71,9 @@ int main ( int argc, char *argv[] ) {
 
 
 void *ascensor ( void *arg ) {
+  usleep(1000);//solo para asegurarse de que al ascensor entre la cantidad de personas que tienen que entrar al inicio, si no trabaja muy rapido y no se aprecia
+  //con este metodo se puede apreciar bien al inicio del programa. Al final vuelve a alcanzar la velocidad de los threads atendiendolos justo cuando llegan.
+  //tambien se puede poner un sleep entre la subida y bajada de cada piso para que el ascensor no supere la velocidad de los otros threads  y se sobrecargue
   long i;
   i = (long) arg;
   pthread_mutex_lock ( &mutex );
@@ -95,7 +98,7 @@ void *ascensor ( void *arg ) {
     }
     if(subidas[pisoActual]>0){//suben al ascensor
       for (int j = 0; j < subidas[pisoActual]; j) {
-        if(cPersonaDentro<=8){//solo suben si hay espacio
+        if(cPersonaDentro<8){//solo suben si hay espacio
           sem_post( &sPersona );
           pthread_mutex_lock ( &mutex );
           cPersonaDentro++;
@@ -122,9 +125,10 @@ void *ascensor ( void *arg ) {
       pthread_mutex_unlock ( &mutex );
 
     }
-    pisoMaximo=0;
-    pisoMinimo=0;
+    pisoMaximo=1;
+    pisoMinimo=1;
     for (int j = 0; j <= PISOS; j++) {//se fija cual es el piso maximo y minimo al que tiene que ir siempre
+
       if(subidas[j]>0&&j>pisoMaximo){
         pisoMaximo=j;
       }
