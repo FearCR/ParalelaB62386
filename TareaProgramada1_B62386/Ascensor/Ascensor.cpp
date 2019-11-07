@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#define NUMTHRDS 100
+#define NUMTHRDS 10000
 #define PISOS 16
 
 
@@ -173,10 +173,11 @@ void *persona ( void *arg ) {
   pthread_mutex_lock ( &mutex );
   cPersonaFuera++;
   subidas[meSuboEn]++;
-  pthread_mutex_unlock ( &mutex );
   if(moving==false){
       sem_post(&sAscensor);
   }
+  pthread_mutex_unlock ( &mutex );
+
 
   sem_wait(&sPersona);
   pthread_mutex_lock ( &mutex );
