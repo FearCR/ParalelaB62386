@@ -1,5 +1,5 @@
 Problema de sincronizacion, Asensor en un edificio de 16 pisos  
-El programa funciona bien.     
+Update noviembre 8: EL prorama funciona bien.  
    
 Para usar el programa solo se compila con g++ Ascensor -lpthread y se corre el archivo a.out.  
   
