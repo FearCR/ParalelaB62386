@@ -7,6 +7,7 @@ g++ Ascensor -lpthread
 ```
   
 Y se corre el archivo a.out.   
+  
 Dentro del programa se especifica con distintos colores las acciones que se realizan para mayor facilidad de revisión.    
   
     
