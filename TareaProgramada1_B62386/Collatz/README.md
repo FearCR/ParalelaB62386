@@ -1,7 +1,7 @@
 # Collatz normal y bitwise  
   
 Se compila con:  
- 
+ g++ Collatz.cpp  
 Los Tiempos incluyen el tiempo del print de cada caso para hacerlo mas claro.    
 Numero usado: 9999999 (nueve millones novecientos noventa y nueve mil novecientos noventa y nueve.)  
 ## BitWise Collatz Times:    
