@@ -17,3 +17,6 @@ El programa consiste en 2 metodos, uno para el Ascensor que es manejado por un s
 - El metodo principal crea los hilos y los envia a sus metodos correspondientes.  
   
 Nota: el programa cuenta con 17 pisos realmente, el piso 0 se puede contar como el "sotano" que es donde inicia el ascensor. no vuelve a este piso. y las personas nunca piden ir a el. se usa mas que todo para hacer el conteo de 1 a 16 en vez de 0 a 15, no afecta en la ejecución del programa.
+  
+    
+## Fecha de entrega:10 de noviembre al finalizar el día.
