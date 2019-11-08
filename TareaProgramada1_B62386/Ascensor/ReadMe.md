@@ -1,7 +1,13 @@
-Problema de sincronizacion, Asensor en un edificio de 16 pisos  
+#Problema de sincronizacion, Asensor en un edificio de 16 pisos  
 Update noviembre 8: El programa funciona bien.  
    
-Para usar el programa solo se compila con g++ Ascensor -lpthread y se corre el archivo a.out. Dentro del programa se especifica con distintos colores las acciones que se realizan para mayor facilidad de revisión.    
+Para usar el programa solo se compila con:  
+```bash
+g++ Ascensor -lpthread
+```
+  
+Y se corre el archivo a.out.   
+Dentro del programa se especifica con distintos colores las acciones que se realizan para mayor facilidad de revisión.    
   
     
 El programa consiste en 2 metodos, uno para el Ascensor que es manejado por un solo hilo y uno para las personas que van a subir al ascensor.  
