@@ -24,4 +24,4 @@ Numero usado: 9999999 (nueve millones novecientos noventa y nueve mil noveciento
 - Run2:0.002481 segundos.    
 - Run3:0.002376 segundos.    
 - Average:0.002482 segundos.  
-#### Aceleracion:1.3214.  
+### Aceleracion:1.3214.  
