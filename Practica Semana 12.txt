@@ -1,0 +1,44 @@
+a) Construir una tabla con los tiempos de corrida para el cálculo de PI
+   (filmina 4.40)
+ -----------------------------
+| Threads | Busy Wait | Mutex |
+ -----------------------------
+|    1    |           |       |
+|    2    |           |       |
+|    4    |           |       |
+|   16    |           |       |
+|   32    |           |       |
+|   64    |           |       |
+ -----------------------------
+
+b) Construir una tabla con los tiempos de corrida para las listas enlazadas
+   i) Caso 1 (filmina 4.78)
+      1000 Initial inserts
+      100000 ops/thread
+      99% Member
+      0.5% Insert
+      0.5% Delete
+
+   ii) Caso 2 (filmina 4.79)
+      1000 Initial inserts
+      100000 ops/thread
+      80% Member
+      10% Insert
+      10% Delete
+
+ -------------------------------------------
+|   Implementation   |   Number of threads  |
+|                    |  1  |  2  |  4  |  8 |
+ -------------------------------------------
+| Read-Write Locks   |     |     |     |    | (pth_ll_rwl)
+ -------------------------------------------
+| One mutex per list |     |     |     |    | (pth_ll_mult_mutex)
+ -------------------------------------------
+| One mutex per node |     |     |     |    | (pth_ll_one_mutex)
+ -------------------------------------------
+
+c) Construir una tabla de tiempos de corrida y eficiencia paralela
+   (filmina 4.82)
+                                     Serial Run-Time
+   Eficiencia Paralela = ----------------------------------------
+                         (Number of Threads) x (Parallel Run-Time)
