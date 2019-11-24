@@ -17,4 +17,4 @@ Y corre con:
 ```bash
 mpiexec -n 4 ./a.out
 ```  
-El numero se puede reemplazar con la cantidad de procesos que soporte la computadora.
+El numero se puede reemplazar con la cantidad de procesos que soporte la computadora(preferiblemente un numero divisible con la cantidad de numeros con la que se va a trabajar).
