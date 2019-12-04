@@ -30,5 +30,18 @@ Compila con:
 Con un millon de elementos   
 CollatzACC tiempo serial:**4.06288 segundos**  
 CollatzACC tiempo Paralelo:**1.12959 segundos**  
-Aceleracion: **3.59677** 
-
+Aceleracion: **3.59677**   
+   
+   
+### CollatzACC_PGI.cpp  
+Es un programa que implementa la conjetura de Collatz usando el API de OpenACC y el compilador PGI. en lo que cambia con la version sin pgi es que en esta no se usan funciones de la libreria Math. Ya que provoca problemas.  
+Compila con:  
+```bash
+pgc++ -fast -acc CollatzACC.cpp 
+```  
+Con un millon de elementos   
+CollatzACC tiempo serial:**0.770357 segundos**  
+CollatzACC tiempo Paralelo:**0.338243 segundos**  
+Aceleracion: **2.27752**   
+  
+Como se puede observar, aun y si la aceleracion es parecida, los tiempos son mucho mas rapidos usando PGI, ya que se copian los datos automaticamente a la GPU y se trabajan ahi.
