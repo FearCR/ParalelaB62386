@@ -33,11 +33,11 @@ CollatzACC tiempo Paralelo:**1.12959 segundos**
 Aceleracion: **3.59677**   
    
    
-### CollatzACC_PGI.cpp  
+### CollatzACC_pgi.cpp  
 Es un programa que implementa la conjetura de Collatz usando el API de OpenACC y el compilador PGI. en lo que cambia con la version sin pgi es que en esta no se usan funciones de la libreria Math. Ya que provoca problemas.  
 Compila con:  
 ```bash
-pgc++ -fast -acc CollatzACC.cpp 
+pgc++ -fast -acc CollatzACC_pgi.cpp 
 ```  
 Con un millon de elementos   
 CollatzACC tiempo serial:**0.770357 segundos**  
