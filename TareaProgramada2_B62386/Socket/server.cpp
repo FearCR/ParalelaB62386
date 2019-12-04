@@ -8,7 +8,8 @@ int main(){
   socket1->socket_set_opt(SOL_SOCKET, SO_REUSEADDR, &optVal);
   socket1->bind(ip, port);
   socket1->listen(10);
-
+  std::cout<<"inicia el servidor"<<std::endl;
+while(true){//este while se puede quitar y se quita el comentario de shutdown y close en socket 2
   while (true) {
     vector<Socket> lee(1);
     lee[0] = *socket1;
@@ -33,12 +34,13 @@ int main(){
     }else{
       string buffer;
       socket2->socket_read(buffer, 1024);
-
       socket2->socket_write(buffer);
+      break;
     }
   }
-  socket2->socket_shutdown(2);
-  socket2->close();
+}
+  //socket2->socket_shutdown(2);
+  //socket2->close();
 
   socket1->socket_shutdown(2);
   socket1->close();
