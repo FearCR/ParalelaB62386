@@ -23,7 +23,8 @@ El numero se puede reemplazar con la cantidad de procesos que soporte la computa
 Es un programa que implementa la conjetura de Collatz usando el API de OpenACC.  
 Compila con:  
 ```bash
-g++ CollatzACC.cpp -fopenACC
+ g++ -fopenacc -Ofast -c CollatzACC.cpp
+ g++ -fopenacc CollatzACC.o -o collatz
 ```  
 
 
