@@ -27,7 +27,7 @@ Compila con:
  g++ -fopenacc CollatzACC.o -o collatz
 ```  
 Con un millon de elementos 
-CollatzACC tiempo serial:*4.06288 segundos*
-CollatzACC tiempo Paralelo:*1.12959 segundos*
-Aceleracion: *3.59677* 
+CollatzACC tiempo serial:**4.06288 segundos**
+CollatzACC tiempo Paralelo:**1.12959 segundos**
+Aceleracion: **3.59677* *
 
