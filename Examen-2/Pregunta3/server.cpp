@@ -58,6 +58,7 @@ while(true){//este while se puede quitar y se quita el comentario de shutdown y 
   }
   buffer=std::to_string(pasos);
       socket2->socket_write(buffer);
+      pasos=0;
       break;
     }
   }
