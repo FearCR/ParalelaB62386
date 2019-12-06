@@ -57,7 +57,8 @@ while(true){//este while se puede quitar y se quita el comentario de shutdown y 
       pasos++;
   }
   buffer=std::to_string(pasos);
-      socket2->socket_write(buffer);
+  string buffer2="Numero de pasos: "+buffer;
+      socket2->socket_write(buffer2);
       pasos=0;
       break;
     }
